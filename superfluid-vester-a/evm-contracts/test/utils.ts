@@ -14,6 +14,8 @@ export const _console = (message?: any, ...optionalParams: any[]) => {
     }
 };
 
+export const toBN = (x: any) => ethers.BigNumber.from(x);
+
 export const buildVestee = (
     vesteeAddress: string,
     amountToVest: BigNumberish,
@@ -42,6 +44,14 @@ export const buildVestees = async (
     );
 };
 
+export const getTotalAmountToBeVested = (
+    vestees: SuperfluidVestooorFactory.VesteeStruct[]
+) => {
+    return vestees
+        .map((x) => toBN(x.amountToVest))
+        .reduce((a, b) => toBN(a).add(toBN(b)), toBN(0));
+};
+
 export const getEndTimestamp = async (
     timeToGoForwards = TEST_ENVIRONMENT_CONSTANTS.DEFAULT_VEST_DURATION
 ) => {
@@ -56,9 +66,10 @@ export const getInstanceAddress = async (txn: ContractTransaction) => {
     const receipt = await txn.wait();
     const { events } = receipt;
     if (events) {
-        const { address } = events.find(
-            (x) => x.event === "OwnershipTransferred"
+        const { args } = events.find(
+            (x) => x.event === "VestingContractCreated"
         )!;
+        const address = args!.instanceAddress;
         _console("Instance at:", address);
         return address;
     }
@@ -73,43 +84,31 @@ export const createSingleVestingContractPromise = (
     const { hostAddress, cfaV1Address } = testEnv.framework.settings.config;
     return testEnv.SuperfluidVestooorFactory.connect(
         signer
-    ).createVestingContract(
-        vestee,
-        hostAddress,
-        cfaV1Address,
-        testEnv.superToken.address
-    );
+    ).createVestingContract(vestee, hostAddress, cfaV1Address);
 };
 
 export const createMultipleVestingContractPromise = (
     testEnv: TestEnvironment,
     signer: SignerWithAddress,
-    vestees: SuperfluidVestooorFactory.VesteeStruct[]
+    vestees: SuperfluidVestooorFactory.VesteeStruct[],
+    totalAmountToBeVested: BigNumberish
 ) => {
     const { hostAddress, cfaV1Address } = testEnv.framework.settings.config;
     return testEnv.SuperfluidVestooorFactory.connect(
         signer
     ).createVestingContracts(
         vestees,
-        testEnv.superToken.address,
+        totalAmountToBeVested,
         hostAddress,
         cfaV1Address
     );
 };
 
-export const mintTokensAndUpgrade = async (
+export const mintTokens = async (
     testEnv: TestEnvironment,
     signer: SignerWithAddress,
     amount: BigNumberish
 ) => {
-    _console(
-        `Mint and Upgrade ${amount.toString()} Tokens to ${signer.address}`
-    );
+    _console(`Mint ${amount.toString()} Tokens to ${signer.address}`);
     await testEnv.token.connect(signer).mint(signer.address, amount);
-    await testEnv.token
-        .connect(signer)
-        .approve(testEnv.superToken.address, amount);
-    await testEnv.superToken
-        .upgrade({ amount: amount.toString() })
-        .exec(signer);
 };

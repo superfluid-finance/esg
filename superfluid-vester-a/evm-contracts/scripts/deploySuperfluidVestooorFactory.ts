@@ -11,14 +11,16 @@ import { _console } from "../test/utils";
  */
 export async function deployVestingFactoryContract(
     signer: SignerWithAddress,
-    vestingImplAddress: string
+    vestingImplAddress: string,
+    tokenAddress: string
 ) {
     const SuperfluidVestooorFactoryFactory = await ethers.getContractFactory(
         "SuperfluidVestooorFactory"
     );
     const SuperfluidVestooorFactoryContract =
         await SuperfluidVestooorFactoryFactory.connect(signer).deploy(
-            vestingImplAddress
+            vestingImplAddress,
+            tokenAddress
         );
     const SuperfluidVestooorFactory =
         await SuperfluidVestooorFactoryContract.deployed();

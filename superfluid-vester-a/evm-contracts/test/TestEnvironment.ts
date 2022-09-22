@@ -91,7 +91,8 @@ export const initializeTestEnvironment = async () => {
     testEnv.SuperfluidVestooor = await deploySuperfluidVestooor(testEnv.admin);
     testEnv.SuperfluidVestooorFactory = await deployVestingFactoryContract(
         testEnv.admin,
-        testEnv.SuperfluidVestooor.address
+        testEnv.SuperfluidVestooor.address,
+        testEnv.superToken.address
     );
 };
 

@@ -11,7 +11,7 @@ import {
     createSingleVestingContractPromise,
     getEndTimestamp,
     getInstanceAddress,
-    mintTokensAndUpgrade,
+    mintTokens,
 } from "./utils";
 
 _makeSuite("Superfluid Vestoooor Tests", (testEnv: TestEnvironment) => {
@@ -19,17 +19,17 @@ _makeSuite("Superfluid Vestoooor Tests", (testEnv: TestEnvironment) => {
     let SuperfluidVestooor: SuperfluidVestooor;
 
     const createVestingContract = async () => {
-        await mintTokensAndUpgrade(
+        await mintTokens(
             testEnv,
             testEnv.admin,
             testEnv.constants.TOTAL_SUPPLY
         );
-        await testEnv.superToken
-            .approve({
-                receiver: testEnv.SuperfluidVestooorFactory.address,
-                amount: testEnv.constants.TOTAL_SUPPLY.toString(),
-            })
-            .exec(testEnv.admin);
+        await testEnv.token
+            .connect(testEnv.admin)
+            .approve(
+                testEnv.SuperfluidVestooorFactory.address,
+                testEnv.constants.TOTAL_SUPPLY.toString()
+            );
 
         const endTimestamp = await getEndTimestamp();
         const vestee = buildVestee(
