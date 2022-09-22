@@ -1,0 +1,3 @@
+[submodule "superfluid-vester-a/evm-contracts/lib/forge-std"]
+	path = superfluid-vester-a/evm-contracts/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
