@@ -10,7 +10,7 @@ import {
     buildVestee,
     createSingleVestingContractPromise,
     getEndTimestamp,
-    getInstanceAddress,
+    getInstanceAddresses,
     mintTokens,
 } from "./utils";
 
@@ -44,7 +44,8 @@ _makeSuite("Superfluid Vestoooor Tests", (testEnv: TestEnvironment) => {
             testEnv.admin,
             vestee
         );
-        instanceAddress = await getInstanceAddress(txn);
+        const receipt = await txn.wait();
+        instanceAddress = (await getInstanceAddresses(receipt))[0];
         const superfluidVestooor = await ethers.getContractAt(
             "SuperfluidVestooor",
             instanceAddress

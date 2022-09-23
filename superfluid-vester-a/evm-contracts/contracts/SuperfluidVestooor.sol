@@ -29,6 +29,9 @@ contract SuperfluidVestooor is Initializable, Ownable {
     /// @notice A convenience library so we don't have to use callAgreement
     CFAv1Library.InitData public cfaV1Lib;
 
+    /// @notice Timestamp the vesting started
+    uint256 public vestingStartTimestamp;
+
     /// @notice Timestamp the vesting should end (roughly)
     /// @dev This will be the timestamp the balance of the SuperTokens will hit 0
     uint256 public vestingEndTimestamp;
@@ -42,7 +45,7 @@ contract SuperfluidVestooor is Initializable, Ownable {
 
     /** Events */
 
-    event VestingEnded();
+    event VestingEnded(uint256 timestamp, uint256 transferredAmount);
 
     /** Custom Errors */
 
@@ -70,6 +73,7 @@ contract SuperfluidVestooor is Initializable, Ownable {
         _transferOwnership(_vestee);
 
         cfaV1Lib = CFAv1Library.InitData(_host, _cfa);
+        vestingStartTimestamp = block.timestamp;
         vestingEndTimestamp = _vestingEndTimestamp;
         amountToVest = _amountToVest;
         tokenToVest = _superToken;
@@ -108,5 +112,7 @@ contract SuperfluidVestooor is Initializable, Ownable {
 
         uint256 tokenBalance = tokenToVest.balanceOf(address(this));
         tokenToVest.transfer(owner(), tokenBalance);
+
+        emit VestingEnded(block.timestamp, tokenBalance);
     }
 }

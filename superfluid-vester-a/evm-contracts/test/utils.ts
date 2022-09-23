@@ -1,5 +1,5 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { BigNumberish, ContractTransaction } from "ethers";
+import { BigNumberish, ContractReceipt } from "ethers";
 import { ethers } from "hardhat";
 
 import { SuperfluidVestooorFactory } from "../typechain-types";
@@ -62,18 +62,19 @@ export const getEndTimestamp = async (
     return futureTimestamp;
 };
 
-export const getInstanceAddress = async (txn: ContractTransaction) => {
-    const receipt = await txn.wait();
+export const getInstanceAddresses = async (receipt: ContractReceipt) => {
     const { events } = receipt;
     if (events) {
-        const { args } = events.find(
+        const vestingContractCreatedEvents = events.filter(
             (x) => x.event === "VestingContractCreated"
-        )!;
-        const address = args!.instanceAddress;
-        _console("Instance at:", address);
-        return address;
+        );
+        const instanceAddresses = vestingContractCreatedEvents.map(
+            (x) => x.args!.instanceAddress
+        );
+        _console("Instances at:", instanceAddresses);
+        return instanceAddresses;
     }
-    return ethers.constants.AddressZero;
+    return [ethers.constants.AddressZero];
 };
 
 export const createSingleVestingContractPromise = (

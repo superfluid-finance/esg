@@ -11,6 +11,43 @@
   justify-content: center;
   align-items: center;
 }
+.outerContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 2rem;
+}
+.insideContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.vesteeInputContainer {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.vesteeInput {
+  width: 400px;
+}
+.vestee {
+  border: 1px solid black;
+  padding: 1rem;
+}
+.selectVestee {
+  border: 1px solid black;
+  width: 400px;
+}
+.vesteeButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 70%;
+  margin-bottom: 2rem;
+}
+.anchor {
+  color: #0d76fc;
+  cursor: pointer;
+}
 
 .footer {
   display: flex;
@@ -54,6 +91,7 @@
   margin: 0 0 2rem;
   line-height: 1.5;
   font-size: 1.5rem;
+  max-width: 42%;
 }
 
 .grid {
