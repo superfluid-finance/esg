@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import { ethers } from "hardhat";
 
 import { _makeSuite, TestEnvironment } from "./TestEnvironment";
 import {

@@ -1,8 +1,11 @@
-import { HardhatUserConfig } from "hardhat/config";
+import { HardhatUserConfig, task, types } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import { config as dotenvConfig } from "dotenv";
 import "@nomiclabs/hardhat-web3";
+import { ethers } from "ethers";
+import { deployVestingFactoryContract } from "./scripts/deploySuperfluidVestooorFactory";
 
+// .env Initialization
 try {
     dotenvConfig();
 } catch (error) {
@@ -11,19 +14,56 @@ try {
     );
 }
 
+// Hardhat Tasks
+task("deploy-factory", "Deploy the SuperfluidVestooorFactory contract")
+    .addParam(
+        "implAddress",
+        "The SuperfluidVestooor implementation contract address",
+        ethers.constants.AddressZero,
+        types.string
+    )
+    .addParam(
+        "tokenAddress",
+        "The vested supertoken contract address",
+        ethers.constants.AddressZero,
+        types.string
+    )
+    .setAction(async ({ implAddress, tokenAddress }, hre) => {
+        const signer = (await hre.ethers.getSigners())[0];
+        await deployVestingFactoryContract(
+            hre,
+            signer,
+            implAddress,
+            tokenAddress
+        );
+    });
+
 const config: HardhatUserConfig = {
     solidity: "0.8.17",
     networks: {
-        hardhat: process.env.FORK_URL
-            ? {
-                  forking: {
-                      url: process.env.FORK_URL,
-                  },
-              }
-            : {},
+        hardhat: {
+            forking: {
+                enabled: process.env.ALCHEMY_FORK_URL !== "",
+                url: process.env.ALCHEMY_FORK_URL || "",
+                // blockNumber: Number(process.env.PINNED_BLOCK),
+            },
+        },
         localhost: {
             url: "http://127.0.0.1:8545",
             chainId: 31337,
+        },
+        goerli: {
+            url: process.env.GOERLI_RPC_URL,
+            accounts: process.env.TEST_ACCOUNT_PRIVATE_KEY
+                ? [process.env.TEST_ACCOUNT_PRIVATE_KEY]
+                : [],
+            chainId: 5,
+        },
+    },
+    etherscan: {
+        apiKey: {
+            mainnet: process.env.ETHERSCAN_API || "",
+            goerli: process.env.ETHERSCAN_API || "",
         },
     },
 };

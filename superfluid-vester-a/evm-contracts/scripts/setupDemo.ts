@@ -1,5 +1,5 @@
 import deployFramework from "@superfluid-finance/ethereum-contracts/scripts/deploy-framework";
-import { ethers } from "hardhat";
+import hre, { ethers } from "hardhat";
 import { errorHandler } from "./deploySuperfluidFramework";
 import TestTokenArtifact from "@superfluid-finance/ethereum-contracts/build/contracts/TestToken.json";
 import { deployTestTokenAndSuperToken } from "./deployTestTokenAndSuperToken";
@@ -9,6 +9,7 @@ import { Framework } from "@superfluid-finance/sdk-core";
 import { TestToken } from "@superfluid-finance/sdk-core/dist/module/typechain";
 
 /**
+ * Handles Contract and Token Creation for Demo
  * Deploys Framework
  * Deploys fDAIx and fUSDCx tokens
  * Deploys SuperfluidVestooor
@@ -27,11 +28,13 @@ async function main() {
 
     const implementationContract = await deploySuperfluidVestooor(Deployer);
     const fDAIVestingFactoryContract = await deployVestingFactoryContract(
+        hre,
         Deployer,
         implementationContract.address,
         fDAIxAddress
     );
     const fUSDCVestingFactoryContract = await deployVestingFactoryContract(
+        hre,
         Deployer,
         implementationContract.address,
         fUSDCxAddress
