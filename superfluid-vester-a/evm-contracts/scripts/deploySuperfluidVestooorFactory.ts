@@ -44,6 +44,8 @@ export async function deployVestingFactoryContract(
         await verifyContract(hre, SuperfluidVestooorFactoryContract.address, [
             vestingImplAddress,
             tokenAddress,
+            framework.cfaV1.contract.address,
+            framework.host.contract.address,
         ]);
     }
 

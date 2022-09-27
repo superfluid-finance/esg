@@ -4,6 +4,7 @@ import { config as dotenvConfig } from "dotenv";
 import "@nomiclabs/hardhat-web3";
 import { ethers } from "ethers";
 import { deployVestingFactoryContract } from "./scripts/deploySuperfluidVestooorFactory";
+import { Framework } from "@superfluid-finance/sdk-core";
 
 // .env Initialization
 try {
@@ -30,7 +31,17 @@ task("deploy-factory", "Deploy the SuperfluidVestooorFactory contract")
     )
     .setAction(async ({ implementation, token }, hre) => {
         const signer = (await hre.ethers.getSigners())[0];
-        await deployVestingFactoryContract(hre, signer, implementation, token);
+        const framework = await Framework.create({
+            provider: hre.ethers.provider,
+            chainId: hre.network.config.chainId!,
+        });
+        await deployVestingFactoryContract(
+            hre,
+            signer,
+            implementation,
+            token,
+            framework
+        );
     });
 
 const config: HardhatUserConfig = {

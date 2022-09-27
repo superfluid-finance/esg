@@ -164,21 +164,12 @@ const Home: NextPage = () => {
         .reduce((a, b) => a.add(b), ethers.BigNumber.from(0));
       const txn = await factoryContract
         .connect(signer)
-        .createVestingContracts(
-          vestees,
-          totalVestAmount,
-          framework.contracts.host.address,
-          framework.contracts.cfaV1.address
-        );
+        .createVestingContracts(vestees, totalVestAmount);
       receipt = await txn.wait();
     } else {
       const txn = await factoryContract
         .connect(signer)
-        .createVestingContract(
-          vestees[0],
-          framework.contracts.host.address,
-          framework.contracts.cfaV1.address
-        );
+        .createVestingContract(vestees[0]);
       receipt = await txn.wait();
     }
     const instanceAddresses = await getInstanceAddresses(receipt);
@@ -293,7 +284,7 @@ const Home: NextPage = () => {
         provider
       ) as SuperfluidVestooor;
       (async () => {
-        const vestee = await superfluidVestooor.owner();
+        const vestee = await superfluidVestooor.vestee();
         const amountToVest = await superfluidVestooor.amountToVest();
         const vestingEndTimestamp =
           await superfluidVestooor.vestingEndTimestamp();
