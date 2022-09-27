@@ -1,4 +1,5 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { Framework } from "@superfluid-finance/sdk-core";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { verifyContract } from "./verify";
 
@@ -13,14 +14,17 @@ export async function deployVestingFactoryContract(
     hre: HardhatRuntimeEnvironment,
     signer: SignerWithAddress,
     vestingImplAddress: string,
-    tokenAddress: string
+    tokenAddress: string,
+    framework: Framework
 ) {
     const SuperfluidVestooorFactoryFactory =
         await hre.ethers.getContractFactory("SuperfluidVestooorFactory");
     const SuperfluidVestooorFactoryContract =
         await SuperfluidVestooorFactoryFactory.connect(signer).deploy(
             vestingImplAddress,
-            tokenAddress
+            tokenAddress,
+            framework.cfaV1.contract.address,
+            framework.host.contract.address
         );
 
     console.log(

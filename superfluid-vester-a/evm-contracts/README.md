@@ -67,6 +67,9 @@ If you want to manually verify contracts, you can use the following command: `np
 
 ## SuperfluidVestooor State Machine
 
+**Plant UML Diagram**
+![Alt text here](plantuml/summary.svg)
+
 ### States
 
 -   Initial State: `[I]`

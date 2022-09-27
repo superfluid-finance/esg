@@ -26,18 +26,27 @@ async function main() {
     const { superTokenAddress: fUSDCxAddress } =
         await deployTestTokenAndSuperToken(Deployer.address, "fUSDC");
 
+    const framework = await Framework.create({
+        provider: ethers.provider,
+        protocolReleaseVersion: "test",
+        chainId: ethers.provider.network.chainId,
+        resolverAddress: process.env.RESOLVER_ADDRESS,
+    });
+
     const implementationContract = await deploySuperfluidVestooor(Deployer);
     const fDAIVestingFactoryContract = await deployVestingFactoryContract(
         hre,
         Deployer,
         implementationContract.address,
-        fDAIxAddress
+        fDAIxAddress,
+        framework
     );
     const fUSDCVestingFactoryContract = await deployVestingFactoryContract(
         hre,
         Deployer,
         implementationContract.address,
-        fUSDCxAddress
+        fUSDCxAddress,
+        framework
     );
     const chainId = await Deployer.getChainId();
     const sf = await Framework.create({

@@ -93,7 +93,8 @@ export const initializeTestEnvironment = async () => {
         hre,
         testEnv.admin,
         testEnv.SuperfluidVestooor.address,
-        testEnv.superToken.address
+        testEnv.superToken.address,
+        testEnv.framework
     );
 };
 

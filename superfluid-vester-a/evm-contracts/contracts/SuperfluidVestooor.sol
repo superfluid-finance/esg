@@ -2,6 +2,7 @@
 pragma solidity ^0.8.17;
 
 import { Initializable } from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
+import { SafeCast } from "@openzeppelin/contracts/utils/math/SafeCast.sol";
 
 import {
     CFAv1Library
@@ -22,6 +23,8 @@ import {
 /// @dev Given the nature of perpetual SF flows, some off-chain automation is needed.
 contract SuperfluidVestooor is Initializable {
     using CFAv1Library for CFAv1Library.InitData;
+    using SafeCast for uint256;
+    using SafeCast for int256;
 
     /** State Variables */
 
@@ -39,15 +42,19 @@ contract SuperfluidVestooor is Initializable {
     /// @dev This will be the total amount of SuperTokens to be vested by the contract
     uint256 public amountToVest;
 
-    /// @notice The owner of the contract
-    /// @dev This will be the vestee and ownership of the contract is non transferrable
-    address public owner;
+    /// @notice The vestee of the contract
+    /// @dev This will be the "owner" of the contract and is non transferrable
+    address public vestee;
 
     /// @notice The SuperToken to be vested
     ISuperToken public tokenToVest;
 
     /** Events */
 
+    /// @notice VestingEnded Event
+    /// @dev This event is emitted when the state of the vesting contract becomes: Vesting Ended
+    /// @param timestamp the block.timestamp of when the vesting ended
+    /// @param transferredAmount the amount of tokens transfererd to the vestee for cleanup
     event VestingEnded(uint256 timestamp, uint256 transferredAmount);
 
     /** Custom Errors */
@@ -58,8 +65,8 @@ contract SuperfluidVestooor is Initializable {
     /** Functions */
 
     /// @notice Initializes the implementation contract
-    /// @dev Transfers ownership to _vestee and has the option to start vesting on contract initialization
-    /// @param _vestee the address receiving the vested tokens
+    /// @dev Transfers "ownership" to _vestee and starts vesting on contract initialization
+    /// @param _vestee the address of the vestee receiving the vested tokens
     /// @param _host the Superfluid host contract address
     /// @param _cfa the Superfluid cfa contract address
     /// @param _superToken the SuperToken contract address
@@ -74,7 +81,7 @@ contract SuperfluidVestooor is Initializable {
         uint256 _vestingEndTimestamp
     ) external initializer {
         // @note transfer ownership to the vestee
-        owner = _vestee;
+        vestee = _vestee;
 
         cfaV1Lib = CFAv1Library.InitData(_host, _cfa);
         vestingStartTimestamp = block.timestamp;
@@ -82,21 +89,24 @@ contract SuperfluidVestooor is Initializable {
         amountToVest = _amountToVest;
         tokenToVest = _superToken;
 
-        int96 flowRate = _getVestingFlowRate(_amountToVest, _vestingEndTimestamp, block.timestamp);
+        int96 flowRate = _getVestingFlowRate(_amountToVest, block.timestamp, _vestingEndTimestamp);
         cfaV1Lib.createFlow(_vestee, _superToken, flowRate);
     }
 
     /// @notice Gets the vesting flow rate given _amountToVest, _vestingEndTimestamp, _vestingStartTimestamp
+    /// @dev Uses SafeCast to cast uint256 => int256 => int96
     /// @param _amountToVest the amount of SuperTokens to be vested
     /// @param _vestingEndTimestamp the vesting end timestamp
     /// @param _vestingStartTimestamp the vesting start timestamp
     /// @return the vesting flow rate
     function _getVestingFlowRate(
         uint256 _amountToVest,
-        uint256 _vestingEndTimestamp,
-        uint256 _vestingStartTimestamp
+        uint256 _vestingStartTimestamp,
+        uint256 _vestingEndTimestamp
     ) internal pure returns (int96) {
-        return int96(int256(_amountToVest / (_vestingEndTimestamp - _vestingStartTimestamp)));
+        return
+            ((_amountToVest / (_vestingEndTimestamp - _vestingStartTimestamp)).toInt256())
+                .toInt96();
     }
 
     /// @notice Restarts vesting in the event that the receiver deletes their flow during the vesting period.
@@ -104,13 +114,13 @@ contract SuperfluidVestooor is Initializable {
     /// Else: We settle the amount that should've been vested since the flow was deleted and continue vesting the remaining amount.
     /// NOTE: Anyone can call this function and can deposit more tokens to this contract to increase the flow rate.
     function restartVesting() public {
-        (, int96 currentFlowRate, , ) = cfaV1Lib.cfa.getFlow(tokenToVest, address(this), owner);
+        (, int96 currentFlowRate, , ) = cfaV1Lib.cfa.getFlow(tokenToVest, address(this), vestee);
         if (currentFlowRate != 0) revert VESTING_IN_PROGRESS();
 
         uint256 remainingTokenBalance = tokenToVest.balanceOf(address(this));
 
         if (canStopVesting()) {
-            tokenToVest.transfer(owner, remainingTokenBalance);
+            tokenToVest.transfer(vestee, remainingTokenBalance);
 
             emit VestingEnded(block.timestamp, remainingTokenBalance);
 
@@ -120,8 +130,8 @@ contract SuperfluidVestooor is Initializable {
         // vesting flow rate based on the original amount to vest and the vesting start and end timestamps
         int96 vestingFlowRate = _getVestingFlowRate(
             amountToVest,
-            vestingEndTimestamp,
-            vestingStartTimestamp
+            vestingStartTimestamp,
+            vestingEndTimestamp
         );
 
         // the remaining amount to be flown at the current time
@@ -133,14 +143,14 @@ contract SuperfluidVestooor is Initializable {
         // if someone deposited tokens when the flow stopped, these additional tokens
         // would be settled to the
         uint256 instantSettlementAmount = remainingTokenBalance - remainingToBeFlowed;
-        tokenToVest.transfer(owner, instantSettlementAmount);
+        tokenToVest.transfer(vestee, instantSettlementAmount);
 
         // continue vesting
-        cfaV1Lib.createFlow(owner, tokenToVest, vestingFlowRate);
+        cfaV1Lib.createFlow(vestee, tokenToVest, vestingFlowRate);
     }
 
     /// @notice Checks whether vesting can be ended by the operator
-    /// @return bool
+    /// @return bool if the vesting can be stopped
     function canStopVesting() public view returns (bool) {
         return block.timestamp >= vestingEndTimestamp - 7 days;
     }
@@ -152,10 +162,12 @@ contract SuperfluidVestooor is Initializable {
             revert VESTING_END_TOO_EARLY();
         }
 
-        cfaV1Lib.deleteFlow(address(this), owner, tokenToVest);
+        // delete the flow from the vesting contract to the vestee
+        cfaV1Lib.deleteFlow(address(this), vestee, tokenToVest);
 
+        // transfer the deposit and remaining balance to the vestee
         uint256 tokenBalance = tokenToVest.balanceOf(address(this));
-        tokenToVest.transfer(owner, tokenBalance);
+        tokenToVest.transfer(vestee, tokenBalance);
 
         emit VestingEnded(block.timestamp, tokenBalance);
     }

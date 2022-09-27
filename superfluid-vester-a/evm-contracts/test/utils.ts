@@ -30,17 +30,14 @@ export const buildVestee = (
 
 export const buildVestees = async (
     vesteeAddresses: string[],
+    amountToVest = TEST_ENVIRONMENT_CONSTANTS.DEFAULT_VEST_AMOUNT,
     timeToGoForwards = TEST_ENVIRONMENT_CONSTANTS.DEFAULT_VEST_DURATION
 ): Promise<SuperfluidVestooorFactory.VesteeStruct[]> => {
     const block = await ethers.provider.getBlock("latest");
     const desiredVestingEndTime = block.timestamp + timeToGoForwards;
 
     return vesteeAddresses.map((x) =>
-        buildVestee(
-            x,
-            TEST_ENVIRONMENT_CONSTANTS.DEFAULT_VEST_AMOUNT,
-            desiredVestingEndTime
-        )
+        buildVestee(x, amountToVest, desiredVestingEndTime)
     );
 };
 
@@ -82,10 +79,9 @@ export const createSingleVestingContractPromise = (
     signer: SignerWithAddress,
     vestee: SuperfluidVestooorFactory.VesteeStruct
 ) => {
-    const { hostAddress, cfaV1Address } = testEnv.framework.settings.config;
     return testEnv.SuperfluidVestooorFactory.connect(
         signer
-    ).createVestingContract(vestee, hostAddress, cfaV1Address);
+    ).createVestingContract(vestee);
 };
 
 export const createMultipleVestingContractPromise = (
@@ -94,15 +90,9 @@ export const createMultipleVestingContractPromise = (
     vestees: SuperfluidVestooorFactory.VesteeStruct[],
     totalAmountToBeVested: BigNumberish
 ) => {
-    const { hostAddress, cfaV1Address } = testEnv.framework.settings.config;
     return testEnv.SuperfluidVestooorFactory.connect(
         signer
-    ).createVestingContracts(
-        vestees,
-        totalAmountToBeVested,
-        hostAddress,
-        cfaV1Address
-    );
+    ).createVestingContracts(vestees, totalAmountToBeVested);
 };
 
 export const mintTokens = async (

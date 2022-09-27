@@ -19,7 +19,11 @@ _makeSuite("Superfluid Vestoooor Tests", (testEnv: TestEnvironment) => {
     let instanceAddress: string;
     let SuperfluidVestooor: SuperfluidVestooor;
 
-    const createVestingContract = async (vesteeAddress: string) => {
+    const createVestingContract = async (
+        vesteeAddress: string,
+        amount = testEnv.constants.DEFAULT_VEST_AMOUNT,
+        timeToGoForwards = testEnv.constants.DEFAULT_VEST_DURATION
+    ) => {
         await mintTokens(
             testEnv,
             testEnv.admin,
@@ -32,12 +36,8 @@ _makeSuite("Superfluid Vestoooor Tests", (testEnv: TestEnvironment) => {
                 testEnv.constants.TOTAL_SUPPLY.toString()
             );
 
-        const endTimestamp = await getEndTimestamp();
-        const vestee = buildVestee(
-            vesteeAddress,
-            testEnv.constants.DEFAULT_VEST_AMOUNT,
-            endTimestamp
-        );
+        const endTimestamp = await getEndTimestamp(timeToGoForwards);
+        const vestee = buildVestee(vesteeAddress, amount, endTimestamp);
 
         _console("Create Vesting contract for:", vesteeAddress);
         const txn = await createSingleVestingContractPromise(
@@ -56,7 +56,7 @@ _makeSuite("Superfluid Vestoooor Tests", (testEnv: TestEnvironment) => {
     };
 
     describe("Negative Cases", function () {
-        this.beforeEach(async () => {
+        beforeEach(async () => {
             const { superfluidVestooor } = await createVestingContract(
                 testEnv.alice.address
             );

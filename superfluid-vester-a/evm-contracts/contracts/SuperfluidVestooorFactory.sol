@@ -27,10 +27,18 @@ contract SuperfluidVestooorFactory {
     }
 
     /// @notice The address of the superfluid vesting contract
-    address public sfVestingImplementation;
+    address public immutable sfVestingImplementation;
 
     /// @notice The address of the SuperToken to be vested
-    ISuperToken public vestedToken;
+    ISuperToken public immutable vestedToken;
+
+    /// @notice The address of the ConstantFlowAgreementV1 contract
+    IConstantFlowAgreementV1 public immutable cfa;
+
+    /// @notice The address of the Host contract
+    ISuperfluid public immutable host;
+
+    /** Events */
 
     /// @notice VestingContractCreated Event
     /// @dev This event is emitted whenever a Vestooor Contract is created
@@ -48,44 +56,52 @@ contract SuperfluidVestooorFactory {
         uint256 vestingEndTimestamp
     );
 
-    constructor(address _sfVestingImplementation, ISuperToken _vestedToken) {
+    /** Custom Errors */
+
+    error NO_ZERO_ADDRESS_VESTEE();
+    error VESTING_END_TIME_TOO_EARLY();
+    error ZERO_TOKENS_TO_VEST();
+
+    constructor(
+        address _sfVestingImplementation,
+        ISuperToken _vestedToken,
+        IConstantFlowAgreementV1 _cfa,
+        ISuperfluid _host
+    ) {
         sfVestingImplementation = _sfVestingImplementation;
         vestedToken = _vestedToken;
+        cfa = _cfa;
+        host = _host;
     }
 
     /// @notice Creates vesting contracts for multiple vestees.
     /// @dev The person sending this must properly approve and have enough balance sent to this
     /// @param _vestees A list of Vestee structs
-    /// @param _host Superfluid Host contract address
-    /// @param _cfa Superfluid CFA contract address
-    function createVestingContracts(
-        Vestee[] calldata _vestees,
-        uint256 _totalAmountToBeVested,
-        ISuperfluid _host,
-        IConstantFlowAgreementV1 _cfa
-    ) external returns (address[] memory) {
+    /// @param _totalAmountToBeVested The total amount of tokens to be vested to all vestees
+    /// @return address[] a list of the deployed instance addresses
+    function createVestingContracts(Vestee[] calldata _vestees, uint256 _totalAmountToBeVested)
+        external
+        returns (address[] memory)
+    {
+        if (_totalAmountToBeVested == 0 || _vestees.length == 0) revert ZERO_TOKENS_TO_VEST();
+
         address[] memory vestingContractAddresses = new address[](_vestees.length);
         _handleERC20TokenTransferAndUpgrade(msg.sender, _totalAmountToBeVested);
-        for (uint256 i; i < _vestees.length; ++i) {
-            address vestingContractAddress = _createVestingContract(
-                msg.sender,
-                _vestees[i],
-                _host,
-                _cfa
-            );
+        for (uint256 i = 0; i < _vestees.length; ) {
+            address vestingContractAddress = _createVestingContract(msg.sender, _vestees[i]);
             vestingContractAddresses[i] = vestingContractAddress;
+            unchecked {
+                ++i;
+            }
         }
         return vestingContractAddresses;
     }
 
     /// @notice External function for creating the vesting contract
-    function createVestingContract(
-        Vestee calldata _vestee,
-        ISuperfluid _host,
-        IConstantFlowAgreementV1 _cfa
-    ) external returns (address) {
+    /// @return address The address of the deployed clone instance
+    function createVestingContract(Vestee calldata _vestee) external returns (address) {
         _handleERC20TokenTransferAndUpgrade(msg.sender, _vestee.amountToVest);
-        return _createVestingContract(msg.sender, _vestee, _host, _cfa);
+        return _createVestingContract(msg.sender, _vestee);
     }
 
     /// @notice Takes an ERC20 and transfer it from the "bank" to this contract
@@ -106,22 +122,23 @@ contract SuperfluidVestooorFactory {
     /// @dev Creates a vesting contract using the Minimal Proxy Pattern (EIP-1167)
     /// @param _bank the address which will be transferring the tokens
     /// @param _vestee Vestee struct [vesteeAddress, amountToVest, vestingEndTimestamp, startVesting]
-    /// @param _host the host contract address
-    /// @param _cfa the cfa contract address
-    function _createVestingContract(
-        address _bank,
-        Vestee calldata _vestee,
-        ISuperfluid _host,
-        IConstantFlowAgreementV1 _cfa
-    ) internal returns (address) {
+    /// @return address The address of the deployed clone instance
+    function _createVestingContract(address _bank, Vestee calldata _vestee)
+        internal
+        returns (address)
+    {
+        if (_vestee.amountToVest == 0) revert ZERO_TOKENS_TO_VEST();
+        if (_vestee.vesteeAddress == address(0)) revert NO_ZERO_ADDRESS_VESTEE();
+        if (_vestee.vestingEndTimestamp < block.timestamp) revert VESTING_END_TIME_TOO_EARLY();
+
         address instanceAddress = Clones.clone(sfVestingImplementation);
 
         vestedToken.transfer(instanceAddress, _vestee.amountToVest);
 
         SuperfluidVestooor(instanceAddress).initialize(
             _vestee.vesteeAddress,
-            _host,
-            _cfa,
+            host,
+            cfa,
             vestedToken,
             _vestee.amountToVest,
             _vestee.vestingEndTimestamp
