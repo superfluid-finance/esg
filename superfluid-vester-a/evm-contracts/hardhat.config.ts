@@ -17,25 +17,20 @@ try {
 // Hardhat Tasks
 task("deploy-factory", "Deploy the SuperfluidVestooorFactory contract")
     .addParam(
-        "implAddress",
+        "implementation",
         "The SuperfluidVestooor implementation contract address",
         ethers.constants.AddressZero,
         types.string
     )
     .addParam(
-        "tokenAddress",
+        "token",
         "The vested supertoken contract address",
         ethers.constants.AddressZero,
         types.string
     )
-    .setAction(async ({ implAddress, tokenAddress }, hre) => {
+    .setAction(async ({ implementation, token }, hre) => {
         const signer = (await hre.ethers.getSigners())[0];
-        await deployVestingFactoryContract(
-            hre,
-            signer,
-            implAddress,
-            tokenAddress
-        );
+        await deployVestingFactoryContract(hre, signer, implementation, token);
     });
 
 const config: HardhatUserConfig = {

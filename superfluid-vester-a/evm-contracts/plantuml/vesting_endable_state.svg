@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="222px" preserveAspectRatio="none" style="width:1747px;height:222px;background:#FFFFFF;" version="1.1" viewBox="0 0 1747 222" width="1747px" zoomAndPan="magnify"><defs/><g><g id="W"><rect fill="#F1F1F1" height="64.2344" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="634" x="743" y="7"/><line style="stroke:#181818;stroke-width:0.5;" x1="743" x2="1377" y1="33.2969" y2="33.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="14" x="1053" y="24.9951">W</text><text fill="#000000" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="175" x="748" y="49.4355">Vesting Endable Window</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="614" x="748" y="63.4043">The `canStopVesting(): block.timestamp &gt;= vestingEndTimestamp - 7 days` returns true in this state.</text></g><g id="E"><rect fill="#F1F1F1" height="50.2656" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="168" x="7" y="166"/><line style="stroke:#181818;stroke-width:0.5;" x1="7" x2="175" y1="192.2969" y2="192.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="9" x="86.5" y="183.9951">E</text><text fill="#000000" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="148" x="12" y="208.4355">Vesting Ended State</text></g><g id="P"><rect fill="#F1F1F1" height="50.2656" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="177" x="971.5" y="166"/><line style="stroke:#181818;stroke-width:0.5;" x1="971.5" x2="1148.5" y1="192.2969" y2="192.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="9" x="1055.5" y="183.9951">P</text><text fill="#000000" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="157" x="976.5" y="208.4355">Vesting Paused State</text></g><g id="VESTING_IN_PROGRESS"><rect fill="#F1F1F1" height="50.2656" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="188" x="1552" y="166"/><line style="stroke:#181818;stroke-width:0.5;" x1="1552" x2="1740" y1="192.2969" y2="192.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="168" x="1562" y="183.9951">VESTING_IN_PROGRESS</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="121" x="1557" y="208.4355">Custom error revert</text></g><!--MD5=[fe608f199843143e85172caf5bef7097]
+link W to E--><g id="link_W_E"><path d="M742.748,43.197 C489.413,48.608 168.941,62.993 120,101 C101.8965,115.059 94.9384,140.643 92.3399,160.7845 " fill="none" id="W-to-E" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="91.7691,165.7776,96.7658,157.2904,92.3372,160.81,88.8176,156.3814,91.7691,165.7776" style="stroke:#181818;stroke-width:1.0;"/><path d="M125,106 L125,131 L1044,131 L1044,116 L1034,106 L125,106 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M1034,106 L1034,116 L1044,116 L1034,106 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="494" x="131" y="123.0669">Occurs once `canStopVesting()` is true and either `restartVesting()` is called</text><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="32" x="629" y="123.0669">AND</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="168" x="665" y="123.0669">no outgoing stream exists</text><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="21" x="837" y="123.0669">OR</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="167" x="862" y="123.0669">if `stopVesting()` is called</text></g><!--MD5=[b2ff00800dfd1810cad1f0619c7de5fd]
+link W to P--><g id="link_W_P"><path d="M1058.18,71.021 C1057.69,80.627 1057.24,91.248 1057,101 C1056.62,116.5509 1056.57,120.4504 1057,136 C1057.22,143.931 1057.62,152.5097 1058.06,160.4444 " fill="none" id="W-to-P" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="1058.37,165.8189,1061.847,156.6042,1058.0831,160.8271,1053.8601,157.0633,1058.37,165.8189" style="stroke:#181818;stroke-width:1.0;"/><path d="M1062,106 L1062,131 L1615,131 L1615,116 L1605,106 L1062,106 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M1605,106 L1605,116 L1615,116 L1605,106 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="532" x="1068" y="123.0669">Occurs if the receiver (vestee) deletes the incoming flow from the vesting contract</text></g><!--MD5=[171383dc0d646af26295b9aa78976888]
+link W to VESTING_IN_PROGRESS--><g id="link_W_VESTING_IN_PROGRESS"><path d="M1377.25,59.167 C1494.16,69.099 1603.37,82.977 1624,101 C1640.72,115.612 1645.75,140.7353 1646.87,160.5706 " fill="none" id="W-to-VESTING_IN_PROGRESS" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="1647.08,165.7502,1650.7103,156.5948,1646.8764,160.7543,1642.7169,156.9205,1647.08,165.7502" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[32512b90e1085b671975edc75d9766dd]
+@startuml
+W - -> E
+W : **Vesting Endable Window**
+W : The `canStopVesting(): block.timestamp >= vestingEndTimestamp - 7 days` returns true in this state.
+E : **Vesting Ended State**
+
+note on link
+Occurs once `canStopVesting()` is true and either `restartVesting()` is called **AND** no outgoing stream exists **OR** if `stopVesting()` is called
+end note
+
+W - -> P
+P : **Vesting Paused State**
+
+note on link
+Occurs if the receiver (vestee) deletes the incoming flow from the vesting contract
+end note
+
+W - -> VESTING_IN_PROGRESS
+
+VESTING_IN_PROGRESS: Custom error revert
+@enduml
+
+PlantUML version 1.2022.8beta11(Unknown compile time)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

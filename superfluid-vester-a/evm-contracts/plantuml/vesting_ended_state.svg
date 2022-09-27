@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="222px" preserveAspectRatio="none" style="width:1487px;height:222px;background:#FFFFFF;" version="1.1" viewBox="0 0 1487 222" width="1487px" zoomAndPan="magnify"><defs/><g><g id="E"><rect fill="#F1F1F1" height="64.2344" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="1473" x="7" y="7"/><line style="stroke:#181818;stroke-width:0.5;" x1="7" x2="1480" y1="33.2969" y2="33.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="9" x="739" y="24.9951">E</text><text fill="#000000" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="148" x="12" y="49.4355">Vesting Ended State</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="1453" x="12" y="63.4043">The SuperToken balance of the `SuperfluidVestooor` instance is &lt;= 0 (only &lt; 0 in the event that the instance is also the reward account for the vested token) and there is no incoming flows to and outgoing flows from `SuperfluidVestooor`.</text></g><g id="Revert"><rect fill="#F1F1F1" height="50.2656" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="134" x="676.5" y="166"/><line style="stroke:#181818;stroke-width:0.5;" x1="676.5" x2="810.5" y1="192.2969" y2="192.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="719" y="183.9951">Revert</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="114" x="681.5" y="208.4355">DOES_NOT_EXIST()</text></g><!--MD5=[7ce18fc5598452355c7ff179610c0d5e]
+link E to Revert--><g id="link_E_Revert"><path d="M743.5,71.08 C743.5,97.357 743.5,134.7408 743.5,160.546 " fill="none" id="E-to-Revert" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="743.5,165.8687,747.5,156.8687,743.5,160.8687,739.5,156.8687,743.5,165.8687" style="stroke:#181818;stroke-width:1.0;"/><path d="M748.5,106 L748.5,131 L1123.5,131 L1123.5,116 L1113.5,106 L748.5,106 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M1113.5,106 L1113.5,116 L1123.5,116 L1113.5,106 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="354" x="754.5" y="123.0669">This function reverts because there is no flow to delete</text></g><!--MD5=[8ff7d8f589093f51e080c670058ea141]
+@startuml
+E : **Vesting Ended State**
+E : The SuperToken balance of the `SuperfluidVestooor` instance is <= 0 (only < 0 in the event that the instance is also the reward account for the vested token) and there is no incoming flows to and outgoing flows from `SuperfluidVestooor`.
+
+E - -> Revert
+Revert: DOES_NOT_EXIST()
+
+note on link
+This function reverts because there is no flow to delete
+end note
+@enduml
+
+PlantUML version 1.2022.8beta11(Unknown compile time)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

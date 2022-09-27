@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="222px" preserveAspectRatio="none" style="width:2154px;height:222px;background:#FFFFFF;" version="1.1" viewBox="0 0 2154 222" width="2154px" zoomAndPan="magnify"><defs/><g><g id="V"><rect fill="#F1F1F1" height="64.2344" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="716" x="558.5" y="7"/><line style="stroke:#181818;stroke-width:0.5;" x1="558.5" x2="1274.5" y1="33.2969" y2="33.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="10" x="911.5" y="24.9951">V</text><text fill="#000000" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="100" x="563.5" y="49.4355">Vesting State</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="696" x="563.5" y="63.4043">There is an active flow where an instance of the `SuperfluidVestooor` is the sender and the vestee is the receiver.</text></g><g id="P"><rect fill="#F1F1F1" height="50.2656" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="177" x="7" y="166"/><line style="stroke:#181818;stroke-width:0.5;" x1="7" x2="184" y1="192.2969" y2="192.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="9" x="91" y="183.9951">P</text><text fill="#000000" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="157" x="12" y="208.4355">Vesting Paused State</text></g><g id="VESTING_END_TOO_EARLY"><rect fill="#F1F1F1" height="50.2656" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="210" x="694.5" y="166"/><line style="stroke:#181818;stroke-width:0.5;" x1="694.5" x2="904.5" y1="192.2969" y2="192.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="190" x="704.5" y="183.9951">VESTING_END_TOO_EARLY</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="121" x="699.5" y="208.4355">Custom error revert</text></g><g id="VESTING_IN_PROGRESS"><rect fill="#F1F1F1" height="50.2656" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="188" x="939.5" y="166"/><line style="stroke:#181818;stroke-width:0.5;" x1="939.5" x2="1127.5" y1="192.2969" y2="192.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="168" x="949.5" y="183.9951">VESTING_IN_PROGRESS</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="121" x="944.5" y="208.4355">Custom error revert</text></g><g id="E"><rect fill="#F1F1F1" height="50" rx="12.5" ry="12.5" style="stroke:#181818;stroke-width:0.5;" width="50" x="1235.5" y="166"/><line style="stroke:#181818;stroke-width:0.5;" x1="1235.5" x2="1285.5" y1="192.2969" y2="192.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="9" x="1256" y="183.9951">E</text></g><!--MD5=[25c99b67b0020eda6d27124bf055952d]
+link V to P--><g id="link_V_P"><path d="M558.431,48.987 C364.254,57.12 156.723,72.425 121.5,101 C103.9427,115.244 97.8245,140.6469 95.8783,160.6774 " fill="none" id="V-to-P" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="95.4513,165.9068,100.1706,157.2623,95.8583,160.9234,92.1972,156.6111,95.4513,165.9068" style="stroke:#181818;stroke-width:1.0;"/><path d="M126.5,106 L126.5,131 L785.5,131 L785.5,116 L775.5,106 L126.5,106 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M775.5,106 L775.5,116 L785.5,116 L775.5,106 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="638" x="132.5" y="123.0669">Occurs when the receiver (vestee) deletes the vesting flow from the `SuperfluidVestooor` instance</text></g><!--MD5=[444ca22cc98e7d2cb1220da4c44f6470]
+link V to VESTING_END_TOO_EARLY--><g id="link_V_VESTING_END_TOO_EARLY"><path d="M841.61,71.089 C829.538,79.172 818.423,89.058 810.5,101 C798.934,118.4318 796.479,142.0833 796.757,160.6231 " fill="none" id="V-to-VESTING_END_TOO_EARLY" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="796.903,165.7074,800.6437,156.5966,796.7599,160.7094,792.647,156.8256,796.903,165.7074" style="stroke:#181818;stroke-width:1.0;"/><path d="M815.5,106 L815.5,131 L981.5,131 L981.5,116 L971.5,106 L815.5,106 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M971.5,106 L971.5,116 L981.5,116 L971.5,106 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="141" x="821.5" y="123.0669">stopVesting() is called</text></g><!--MD5=[b2a24af0f3ee846ab20437fd0f5b0c2a]
+link V to VESTING_IN_PROGRESS--><g id="link_V_VESTING_IN_PROGRESS"><path d="M960.514,71.032 C971.185,79.899 981.965,90.132 990.5,101 C1004.645,119.0107 1015.73,142.4296 1023.1,160.7236 " fill="none" id="V-to-VESTING_IN_PROGRESS" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="1025.08,165.7388,1025.5009,155.8989,1023.2464,161.0871,1018.0583,158.8326,1025.08,165.7388" style="stroke:#181818;stroke-width:1.0;"/><path d="M1017.5,106 L1017.5,131 L1198.5,131 L1198.5,116 L1188.5,106 L1017.5,106 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M1188.5,106 L1188.5,116 L1198.5,116 L1188.5,106 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="156" x="1023.5" y="123.0669">restartVesting() is called</text></g><!--MD5=[8d1c0ea81888e075cf1c764c1a44d804]
+link V to E--><g id="link_V_E"><path d="M1127.45,71.066 C1164.29,79.432 1195.82,89.433 1211.5,101 C1231.39,115.675 1244.18,140.9499 1251.69,160.824 " fill="none" id="V-to-E" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="1253.49,165.7506,1254.1663,155.925,1251.7778,161.0529,1246.6499,158.6645,1253.49,165.7506" style="stroke:#181818;stroke-width:1.0;"/><path d="M1244.5,106 L1244.5,131 L2147.5,131 L2147.5,116 L2137.5,106 L1244.5,106 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M2137.5,106 L2137.5,116 L2147.5,116 L2137.5,106 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="273" x="1250.5" y="123.0669">Occurs when someone calls `stopVesting`</text><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="21" x="1527.5" y="123.0669">OR</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="580" x="1552.5" y="123.0669">the flow is liquidated due to the contract instance becoming critical (available balance &lt; 0)</text></g><!--MD5=[a5578c52ee877547db03b75c2419da70]
+@startuml
+V - -> P
+V: **Vesting State**
+V: There is an active flow where an instance of the `SuperfluidVestooor` is the sender and the vestee is the receiver.
+
+P : **Vesting Paused State**
+note on link 
+Occurs when the receiver (vestee) deletes the vesting flow from the `SuperfluidVestooor` instance
+end note
+
+V - -> VESTING_END_TOO_EARLY
+VESTING_END_TOO_EARLY: Custom error revert
+note on link 
+stopVesting() is called 
+end note
+
+V - -> VESTING_IN_PROGRESS
+VESTING_IN_PROGRESS: Custom error revert
+note on link 
+restartVesting() is called 
+end note
+
+V - -> E
+note on link
+Occurs when someone calls `stopVesting` **OR** the flow is liquidated due to the contract instance becoming critical (available balance < 0)
+end note
+@enduml
+
+PlantUML version 1.2022.8beta11(Unknown compile time)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
